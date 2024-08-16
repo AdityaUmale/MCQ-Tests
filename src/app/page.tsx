@@ -1,18 +1,26 @@
-import React from 'react'
-import LoginForm from './components/LoginForm'
 import Link from 'next/link'
+import React from 'react'
 
-function page() {
+
+
+
+const HomePage = async () => {
+
+
+
   return (
-    <div className="flex flex-col justify-center items-center m-4">
-      <h1 className="text-3xl my-3">Hey, time to Sign In</h1>
-      <LoginForm />
-      <p className="my-3">
-        Dont you have an account?
-        <Link href="register" className="mx-2 underline">Register</Link>
-      </p>
+    <div>
+      <Link href="/login"
+      ><button>sign in</button>
+      </Link>
+      <br />
+      <br />
+      <Link href="/register">
+      <button>register</button>
+      </Link>
+       
     </div>
   )
 }
 
-export default page
+export default HomePage

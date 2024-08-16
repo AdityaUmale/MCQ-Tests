@@ -7,6 +7,7 @@ import RegistrationForm from '../components/RegistrationForm'
 const RegisterPage = () => {
   return (
     <div className="flex flex-col justify-center items-center m-4">
+      <br /><br /><br />
        <RegistrationForm /> 
        <p className="my-3">
         Already have an account?
