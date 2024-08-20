@@ -1,24 +1,28 @@
 import { NextResponse } from "next/server";
 import { createUser } from "@/queries/users";
+import { User } from "@/model/user-model";
 
 import bcrypt from "bcryptjs";
 import { dbConnect } from "@/lib/mongo";
 
 export const POST = async (request: any) => {
-  const {name, email, password} = await request.json();
+  const {name, email, password, location, role} = await request.json();
 
-  console.log(name, email, password);
+  console.log(name, email, password, location, role);
 
   // Create a DB Conenction
   await dbConnect();
   // Encrypt the password
   const hashedPassword = await bcrypt.hash(password, 5);
   // Form a DB payload
-  const newUser = {
+  const newUser = new User({
     name,
+    email,
     password: hashedPassword,
-    email
-  }
+    location,
+    role,
+  });
+
   // Update the DB
   try {
     await createUser(newUser);

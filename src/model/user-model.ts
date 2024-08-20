@@ -13,6 +13,14 @@ const userSchema = new Schema({
     required: true,
     type: String,
   },
+  role: {
+    required: true,
+    type: String,
+  },
+  location: {
+    required: true,
+    type: String,
+  },
 });
 
 export const User = mongoose.models.User ?? mongoose.model("User", userSchema);

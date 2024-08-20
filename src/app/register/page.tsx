@@ -11,7 +11,7 @@ const RegisterPage = () => {
        <RegistrationForm /> 
        <p className="my-3">
         Already have an account?
-        <Link href="/" className="mx-2 underline">Login</Link>
+        <Link href="/login" className="mx-2 underline">Login</Link>
         </p>
     </div>
     
