@@ -2,7 +2,6 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
-
 import { User } from "./model/user-model";
 import bcrypt from "bcryptjs";
 
@@ -15,6 +14,22 @@ export const {
 } = NextAuth({
     session: {
       strategy: 'jwt',
+    },
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.role = user.role;
+                token.location = user.location;
+            }
+            return token;
+        },
+    async session({ session, token }) {
+        if (session.user) {
+            session.user.role = token.role as string;
+            session.user.location = token.location as string;
+        }
+            return session;
+        },
     },
     providers: [
         CredentialsProvider({
