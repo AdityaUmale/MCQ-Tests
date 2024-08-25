@@ -18,7 +18,6 @@ import { useState } from "react";
 const RegistrationForm = () => {
   const router = useRouter();
 
-  const [location, setLocation] = useState("");
   const [role, setRole] = useState("");
 
   async function handleSubmit(event: any) {
@@ -40,7 +39,6 @@ const RegistrationForm = () => {
           name,
           email,
           password,
-          location,
           role,
         }),
       });
@@ -67,19 +65,6 @@ const RegistrationForm = () => {
             <Label htmlFor="name">Name</Label>
             <Input id="firstname" placeholder="Tyler" type="text" name="name" />
           </LabelInputContainer>
-          <Select onValueChange={(value) => setLocation(value)}>
-            <div>
-          <Label htmlFor="location">Location</Label>
-          <SelectTrigger className="w-[160px] mt-1">
-            <SelectValue placeholder="Loaction" />
-          </SelectTrigger>
-          <SelectContent>
-                <SelectItem value="Akola">Akola</SelectItem>
-                <SelectItem value="Amaravti">Amaravti</SelectItem>
-                <SelectItem value="Nagpur">Nagpur</SelectItem>
-          </SelectContent>
-          </div>
-        </Select>
         </div>
         <Select onValueChange={(value) => setRole(value)}>
           <Label htmlFor="role">Role</Label>
@@ -88,8 +73,7 @@ const RegistrationForm = () => {
           </SelectTrigger>
           <SelectContent>
               <SelectItem value="Student">Student</SelectItem>
-              <SelectItem value="Traveller">Traveller</SelectItem>
-              <SelectItem value="Businessman">Businessman</SelectItem>
+              <SelectItem value="Admin">Admin</SelectItem>
           </SelectContent>
         </Select>
 
