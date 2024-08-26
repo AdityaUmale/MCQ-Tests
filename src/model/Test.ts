@@ -11,6 +11,7 @@ const QuestionSchema = new mongoose.Schema({
 const TestSchema = new mongoose.Schema({
   testName: String,
   questions: [QuestionSchema],
+  isPublished: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
 });
 
