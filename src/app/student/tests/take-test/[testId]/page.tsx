@@ -3,6 +3,8 @@ import { useState, useEffect } from "react"
 import { useParams } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import { useSession } from "next-auth/react";
+import { Router } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface Question {
   _id: string;
@@ -23,6 +25,8 @@ export default function TakeTestPage() {
   const params = useParams();
   const testId = params.testId as string;
   const { data: session, status } = useSession();
+  const router = useRouter();
+
 
   useEffect(() => {
     const fetchTest = async () => {
@@ -75,6 +79,7 @@ export default function TakeTestPage() {
       if (response.ok) {
         const result = await response.json();
         console.log("Test submitted successfully:", result);
+        router.push("/student/tests/results");
         // Redirect to a results page or show a success message
       } else {
         const errorData = await response.json();

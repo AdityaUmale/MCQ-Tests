@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const QuestionSchema = new mongoose.Schema({
   question: String,
   options: [String],
-  correctAnswer: String,
+  correctAnswer: Number,
   _id: { type: mongoose.Schema.Types.ObjectId, auto: true }, // Automatically generates a unique ID for each question
 });
 

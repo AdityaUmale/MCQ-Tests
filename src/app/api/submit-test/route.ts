@@ -4,17 +4,18 @@ import { authOptions } from "../../../auth";
 import Test from '@/model/Test';
 import TestResult from '../../../model/TestResult';
 import { dbConnect } from '@/lib/mongo';
+import mongoose from 'mongoose';
 
 export async function POST(request: Request) {
-  // Commented out for testing
   const session = await getServerSession(authOptions);
   if (!session || !session.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-
+  
   await dbConnect();
-
   const { testId, answers } = await request.json();
+  console.log("answers are:", answers);
+  console.log("testId is:", testId);
 
   try {
     const test = await Test.findById(testId);
@@ -26,8 +27,16 @@ export async function POST(request: Request) {
     const totalQuestions = test.questions.length;
 
     test.questions.forEach((question: any) => {
-      if (answers[question._id] === question.correctAnswer) {
+      const questionId = question._id.toString();
+      console.log("question id is:", questionId);
+      console.log("submitted answer is:", answers[questionId]);
+      console.log("correct answer is:", question.correctAnswer);
+
+      if (answers[questionId] === question.correctAnswer) {
         score++;
+        console.log("Correct answer!");
+      } else {
+        console.log("Incorrect answer.");
       }
     });
 
@@ -37,7 +46,7 @@ export async function POST(request: Request) {
       user: session.user.id,
       test: testId,
       answers: Object.entries(answers).map(([questionId, selectedAnswer]) => ({
-        question: questionId,
+        question: new mongoose.Types.ObjectId(questionId),
         selectedAnswer
       })),
       score,

@@ -16,6 +16,7 @@ export default function CreateTestPage() {
 
   const handleAddQuestion = (questionData: QuestionData) => {
     setQuestions((prev) => [...prev, questionData])
+    
   }
 
   const handleFinishTest = async () => {
