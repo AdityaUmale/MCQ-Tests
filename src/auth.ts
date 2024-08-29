@@ -8,6 +8,7 @@ import bcrypt from "bcryptjs";
 import { User as UserModel } from "./model/user-model";
 
 export const authOptions: AuthOptions = {
+    secret: process.env.AUTH_SECRET,
   session: {
     strategy: 'jwt' as const,
   },
@@ -15,12 +16,16 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }: { token: JWT; user?: User }) {
       if (user) {
         token.role = (user as any).role;
-      }
+        token.id = (user as any)._id;  // Add the user ID to the token
+    
+    }
       return token;
     },
     async session({ session, token }: { session: Session; token: JWT }) {
       if (session.user) {
         (session.user as any).role = token.role as string;
+        (session.user as any).id = token.id;  // Add the user ID to the session
+        
       }
       return session;
     },

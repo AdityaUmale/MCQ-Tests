@@ -1,11 +1,10 @@
-// models/Test.ts
-
 import mongoose from 'mongoose';
 
 const QuestionSchema = new mongoose.Schema({
   question: String,
   options: [String],
   correctAnswer: String,
+  _id: { type: mongoose.Schema.Types.ObjectId, auto: true }, // Automatically generates a unique ID for each question
 });
 
 const TestSchema = new mongoose.Schema({
