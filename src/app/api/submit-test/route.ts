@@ -43,6 +43,8 @@ export async function POST(request: Request) {
     const percentage = (score / totalQuestions) * 100;
 
     const testResult = new TestResult({
+      userName: session.user.name,
+      testName: test.testName,
       user: session.user.id,
       test: testId,
       answers: Object.entries(answers).map(([questionId, selectedAnswer]) => ({

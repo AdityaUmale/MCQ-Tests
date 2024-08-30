@@ -71,6 +71,8 @@ export default function TakeTestPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          userName: session?.user?.name,
+          testName: test?.testName,
           testId,
           answers: selectedAnswers,
         }),
@@ -79,7 +81,7 @@ export default function TakeTestPage() {
       if (response.ok) {
         const result = await response.json();
         console.log("Test submitted successfully:", result);
-        router.push("/student/tests/results");
+        router.push("/student/results");
         // Redirect to a results page or show a success message
       } else {
         const errorData = await response.json();
