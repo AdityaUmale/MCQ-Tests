@@ -25,9 +25,9 @@ const LoginForm = () => {
         console.log("Login successful, role:", result.role);
         // Redirect based on user role
         if (result.role === 'Admin') {
-          router.push("/admin/dashboard");
+          router.push("/admin/publish-test");
         } else if (result.role === 'Student') {
-          router.push("/student/dashboard");
+          router.push("/student/tests");
         }
       }
     } catch (e) {
@@ -39,10 +39,10 @@ const LoginForm = () => {
   return (
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
-        Welcome to Smart City!
+        Welcome to MCQ Tests!
       </h2>
       <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-        Login to Smart City to explore.
+        Login to explore.
       </p>
 
       <form className="my-8" onSubmit={onSubmit}>

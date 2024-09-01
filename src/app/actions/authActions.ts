@@ -38,13 +38,12 @@ export async function doSocialLogin(formData: any) {
 
 export async function doLogout() {
     try {
-      const response = await signOut();
-      if (response === true) {
-        return { redirectUrl: "/" };
-      }
-      return { error: "Logout failed, please try again." };
-      
+      await signOut({
+        redirect: true,
+        callbackUrl: "/", // Redirect to home page after logout
+      });
     } catch (err) {
-      console.error(err);
+      console.error("Logout failed:", err);
     }
-}
+  }
+  

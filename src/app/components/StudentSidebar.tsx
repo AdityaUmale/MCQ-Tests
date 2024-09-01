@@ -47,11 +47,11 @@ export function StudentSidebar() {
             {links.map((link, idx) => (
               <SidebarLink key={idx} link={link} />
             ))}
-             <button
+             <button 
               onClick={handleLogout}
-              className="flex items-center gap-2 text-neutral-700 dark:text-neutral-200"
+              className="flex items-center gap-2 text-neutral-700 dark:text-neutral-200 py-2"
             >
-              <IconLogout className="h-5 w-5 flex-shrink-0" />
+              <IconLogout className="h-5 w-5 flex-shrink-0 " />
               Logout
             </button>
           </div>

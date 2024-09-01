@@ -29,7 +29,7 @@ export async function GET(req: Request) {
       testName: result.testName || (result.test && result.test.testName),
       score: result.score,
       percentage: result.percentage,
-      testId: result.test._id,
+      testId: result.test ? result.test._id : null,
       userName: result.userName
     }));
 

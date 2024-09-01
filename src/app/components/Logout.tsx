@@ -1,4 +1,4 @@
-import { doLogout } from "../actions"
+import { doLogout } from "../actions/authActions"
 
 
 

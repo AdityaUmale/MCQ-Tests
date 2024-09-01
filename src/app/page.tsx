@@ -1,92 +1,111 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ClipboardList, BarChart, Trophy, Search } from "lucide-react"
+"use client";
+import React from "react";
+import { Boxes } from "@/components/ui/background-boxes";
+import { SparklesCore } from "@/components/ui/sparkles";
+import IconCloud from "@/components/magicui/icon-cloud";
+import Link from "next/link"; // Import for navigation
+import { ArrowRight } from "lucide-react";
 
-export default function Component() {
+const slugs = [
+  "typescript",
+  "javascript",
+  "dart",
+  "java",
+  "react",
+  "flutter",
+  "android",
+  "html5",
+  "css3",
+  "nodedotjs",
+  "express",
+  "nextdotjs",
+  "prisma",
+  "amazonaws",
+  "postgresql",
+  "firebase",
+  "nginx",
+  "vercel",
+  "testinglibrary",
+  "jest",
+  "cypress",
+  "docker",
+  "git",
+  "jira",
+  "github",
+  "gitlab",
+  "visualstudiocode",
+  "androidstudio",
+  "sonarqube",
+  "figma",
+];
+
+export default function BackgroundBoxesDemo() {
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
-      <header className="px-4 lg:px-6 h-16 flex items-center backdrop-blur-sm bg-white/30 dark:bg-gray-900/30 sticky top-0 z-50">
-        <Link className="flex items-center justify-center" href="#">
-          <span className="sr-only">MCQ Tests</span>
-          <span className="font-bold text-lg bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">MCQ Tests</span>
+    <div className="h-screen relative w-full overflow-hidden bg-slate-900 flex flex-col justify-between p-4 md:pl-10">
+      {/* Transparent Navbar */}
+      <nav className="absolute top-0 left-0 mt-5 w-full z-30 flex items-center justify-between p-4 md:px-10 text-white bg-transparent">
+        {/* Left side: MCQ Tests Link */}
+        <Link href="/mcq-tests" className="text-2xl font-extrabold">
+          MCQ Tests
         </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-sm font-medium hover:text-blue-500 transition-colors" href="#">
-            Features
+        {/* Right side: Sign In and Sign Up */}
+        <div className="space-x-4 flex">
+          <Link href="/login" className="flex items-center justify-center gap-2 px-4 py-2 font-semibold text-black transition-all duration-300 bg-white rounded-full hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
+            <span>Sign in</span>
+            <ArrowRight className="w-5 h-5" />
           </Link>
-          <Link className="text-sm font-medium hover:text-blue-500 transition-colors" href="#">
-            About
+          <Link href="/register" className="flex items-center justify-center gap-2 px-4 py-2 font-semibold text-black transition-all duration-300 bg-white rounded-full hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">
+            <span>Sign Up</span>
+            <ArrowRight className="w-5 h-5" />
           </Link>
-          <Link className="text-sm font-medium hover:text-blue-500 transition-colors" href="#">
-            Contact
-          </Link>
-        </nav>
-      </header>
-     
-      <main className="flex-1">
-        <section className="w-full py-12 md:py-24 bg-gradient-to-br from-blue-50 via-white to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">
-                  COETA's Inhouse MCQ Platform
-                </h1>
-                <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
-                  Empower your learning with our comprehensive Multiple Choice Question platform. Test your knowledge, track your progress, and excel in your studies.
-                </p>
-              </div>
-              <div className="space-x-4">
-                <Button asChild className="bg-blue-500 hover:bg-blue-600 text-white">
-                  <Link href="/login">Sign In</Link>
-                </Button>
-                <Button asChild variant="outline" className="border-blue-500 text-blue-500 hover:bg-blue-50 dark:hover:bg-gray-800">
-                  <Link href="/register">Sign Up</Link>
-                </Button>
-              </div>
-            </div>
+        </div>
+      </nav>
+
+      <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
+      <Boxes />
+
+      {/* Main Content */}
+      <div className="flex flex-col md:flex-row w-full justify-between items-center space-y-6 md:space-y-0 md:space-x-6 mt-28">
+        {/* Adjusted to ensure content doesn't overlap navbar */}
+
+        {/* Text Section */}
+        <div className="flex flex-col w-full md:w-1/2">
+          <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl md:text-5xl lg:text-6xl">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
+              Welcome to COETA's Inhouse MCQ Platform
+            </span>
+          </h1>
+          <div className="w-full md:w-[30rem] h-32 relative mt-2">
+            {/* Gradients */}
+            <div className="absolute inset-x-10 md:inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-[2px] w-3/4 blur-sm" />
+            <div className="absolute inset-x-10 md:inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-px w-3/4" />
+            <div className="absolute inset-x-20 md:inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-[5px] w-1/4 blur-sm" />
+            <div className="absolute inset-x-20 md:inset-x-60 top-0 bg-gradient-to-r from-transparent via-sky-500 to-transparent h-px w-1/4" />
+
+            {/* Core component */}
+            <SparklesCore
+              background="transparent"
+              minSize={0.8}
+              maxSize={1.5}
+              particleDensity={1200}
+              className="w-full h-full"
+              particleColor="#FFFFFF"
+            />
           </div>
-        </section>
-        <section className="w-full py-12 bg-white dark:bg-gray-800">
-          <div className="container px-4 md:px-6">
-            <h2 className="text-2xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">Key Features</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="flex flex-col items-center text-center group">
-                <div className="mb-4 p-4 bg-blue-50 dark:bg-gray-700 rounded-full transition-all duration-300 ease-in-out group-hover:scale-110">
-                  <ClipboardList className="w-6 h-6 text-blue-500" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Give Tests</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Take a wide variety of MCQ tests to challenge your knowledge</p>
-              </div>
-              <div className="flex flex-col items-center text-center group">
-                <div className="mb-4 p-4 bg-teal-50 dark:bg-gray-700 rounded-full transition-all duration-300 ease-in-out group-hover:scale-110">
-                  <BarChart className="w-6 h-6 text-teal-500" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Track Results</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Monitor your performance and see your progress over time</p>
-              </div>
-              <div className="flex flex-col items-center text-center group">
-                <div className="mb-4 p-4 bg-blue-50 dark:bg-gray-700 rounded-full transition-all duration-300 ease-in-out group-hover:scale-110">
-                  <Trophy className="w-6 h-6 text-blue-500" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Rankings</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Compare your scores with peers and climb the leaderboard</p>
-              </div>
-              <div className="flex flex-col items-center text-center group">
-                <div className="mb-4 p-4 bg-teal-50 dark:bg-gray-700 rounded-full transition-all duration-300 ease-in-out group-hover:scale-110">
-                  <Search className="w-6 h-6 text-teal-500" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Review Tests</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Analyze your answers and learn from your mistakes</p>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-      <footer className="py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-gray-200 dark:border-gray-700">
-        <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+        </div>
+
+        {/* Icon Cloud Section */}
+        <div className="relative flex h-full w-full md:w-1/2 max-w-full md:max-w-[32rem] items-center justify-center overflow-hidden px-4 md:px-10 pb-10 pt-4">
+          <IconCloud iconSlugs={slugs} />
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="w-full bg-slate-900 text-white text-center py-4 mt-auto">
+        <p className="text-md">
           College of Engineering and Technology, Akola
         </p>
       </footer>
     </div>
-  )
+  );
 }

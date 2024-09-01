@@ -27,6 +27,12 @@ export default function ReviewTestPage() {
   }, [testId, resultId]);
 
   const fetchReviewData = async () => {
+    if (!testId || !resultId || testId === "null" || resultId === "null") {
+      console.error("Invalid testId or resultId");
+      alert("Invalid test or result ID. Please try again.");
+      return;
+    }
+  
     try {
       const response = await fetch(`/api/review/${testId}/${resultId}`);
       if (response.ok) {

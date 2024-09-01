@@ -93,7 +93,7 @@ export default function StudentTestsPage() {
       }
     } catch (error) {
       console.error('Error fetching published tests:', error);
-      alert('Failed to fetch published tests. Please try again.');
+      
     }
   };
 

@@ -32,7 +32,6 @@ export default function StudentTestResultsPage() {
       }
     } catch (error) {
       console.error("Error fetching test results:", error);
-      alert("Failed to fetch test results. Please try again.");
     }
   };
 
@@ -41,6 +40,11 @@ export default function StudentTestResultsPage() {
   };
 
   const handleReviewClick = (testId: string, resultId: string) => {
+    if (!testId || testId === "null") {
+      console.error("Invalid testId:", testId);
+      alert("Invalid test ID. Cannot review this test.");
+      return;
+    }
     router.push(`/student/results/review/${testId}/${resultId}`);
   };
 
