@@ -89,8 +89,9 @@ export default function StudentTestsPage() {
         const data = await response.json();
         setTests(data.tests);
       } else {
+        alert("Hello! I am an alert box!!");
         throw new Error('Failed to fetch published tests');
-      }
+       }
     } catch (error) {
       console.error('Error fetching published tests:', error);
       
