@@ -1,5 +1,5 @@
 import React from 'react'
-import { doSocialLogin } from '../actions'
+import { doSocialLogin } from '../actions/authActions'
 
 function SocialLogin() {
   return (

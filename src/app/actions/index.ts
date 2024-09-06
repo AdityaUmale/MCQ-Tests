@@ -2,7 +2,7 @@
 
 import { authOptions } from "@/auth";
 import { getServerSession } from "next-auth";
-import { getSession, signIn } from "next-auth/react";
+
 
 // Custom credential login handler
 
