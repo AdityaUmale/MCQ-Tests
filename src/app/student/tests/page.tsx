@@ -93,6 +93,7 @@ export default function StudentTestsPage() {
         throw new Error('Failed to fetch published tests');
        }
     } catch (error) {
+      alert("Hello! I am an alert box!!");
       console.error('Error fetching published tests:', error);
       
     }
