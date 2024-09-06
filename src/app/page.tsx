@@ -72,7 +72,7 @@ export default function BackgroundBoxesDemo() {
         <div className="flex flex-col w-full md:w-1/2">
           <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl md:text-5xl lg:text-6xl">
             <span className="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
-              Welcome to COETA's Inhouse MCQ Platform
+              Welcome to COETAs Inhouse MCQ Platform
             </span>
           </h1>
           <div className="w-full md:w-[30rem] h-32 relative mt-2">
