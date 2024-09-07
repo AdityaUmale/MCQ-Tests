@@ -3,7 +3,7 @@ import { createUser } from "@/queries/users";
 import { User } from "@/model/user-model";
 
 import bcrypt from "bcryptjs";
-import { dbConnect } from "@/lib/mongo";
+import  dbConnect  from "@/lib/mongo";
 
 export const POST = async (request: any) => {
   const {name, email, password, role} = await request.json();

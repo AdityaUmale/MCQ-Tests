@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { dbConnect } from "@/lib/mongo";
+import  dbConnect  from "@/lib/mongo";
 import TestResult from "@/model/TestResult";
 import Test from "@/model/Test";
 import { getServerSession } from "next-auth";
