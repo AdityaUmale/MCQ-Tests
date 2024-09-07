@@ -6,7 +6,7 @@ import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { User as UserModel } from "./model/user-model";
-import { dbConnect } from "./lib/mongo";
+import  dbConnect  from "./lib/mongo";
 
 export const authOptions: AuthOptions = {
     secret: process.env.AUTH_SECRET,
