@@ -1,6 +1,6 @@
 {
     "functions": {
-      "api/auth/**/*.js": {
+      "api/auth/**/*.ts": {
         "maxDuration": 60
       }
     }
