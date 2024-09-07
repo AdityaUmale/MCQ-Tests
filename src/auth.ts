@@ -6,6 +6,7 @@ import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { User as UserModel } from "./model/user-model";
+import { dbConnect } from "./lib/mongo";
 
 export const authOptions: AuthOptions = {
     secret: process.env.AUTH_SECRET,
@@ -37,6 +38,7 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials: any) {
+        await dbConnect();
         if (credentials === null) return null;
         try {
           const user = await UserModel.findOne({ email: credentials.email });
