@@ -77,25 +77,26 @@ function TimerIcon(props: any) {
 export default function StudentTestsPage() {
   const router = useRouter();
   const [tests, setTests] = useState<Test[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchPublishedTests();
   }, []);
 
   const fetchPublishedTests = async () => {
+    setLoading(true);
     try {
       const response = await fetch('/api/tests/published');
-      if (response.ok) {
-        const data = await response.json();
-        setTests(data.tests);
-      } else {
-        alert("Hello! I am an alert box!!");
-        throw new Error('Failed to fetch published tests');
-       }
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setTests(data.tests);
     } catch (error) {
-      alert("Hello! I am an alert box!!");
       console.error('Error fetching published tests:', error);
-      
+      // Set an error state or display a user-friendly error message
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -117,7 +118,7 @@ export default function StudentTestsPage() {
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold mb-4">Available Tests</h1>
-      {tests.map((test) => (
+      {loading ? <p>Loading tests...</p> : tests.map((test) => (
         <Card key={test._id} className="w-full max-w-md">
           <CardHeader className="flex items-center justify-between">
             <CardTitle>{test.testName}</CardTitle>
