@@ -86,7 +86,8 @@ export default function StudentTestsPage() {
   const fetchPublishedTests = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/tests/published');
+      const timestamp = new Date().getTime();
+      const response = await fetch(`/api/tests/published?t=${timestamp}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
