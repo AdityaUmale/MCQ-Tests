@@ -4,6 +4,8 @@ import TestResult from "@/model/TestResult";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth";
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(req: Request) {
   try {
     const session = await getServerSession(authOptions);
