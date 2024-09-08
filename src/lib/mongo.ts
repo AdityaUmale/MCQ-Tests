@@ -12,7 +12,6 @@ async function dbConnect(): Promise<void> {
     console.log('Already connected to the database');
     return;
   }
-
   try {
     // Attempt to connect to the database
     const db = await mongoose.connect(process.env.MONGO_DB_CONNECTION_STRING || '', {});
