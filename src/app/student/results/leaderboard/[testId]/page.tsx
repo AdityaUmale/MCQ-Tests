@@ -20,19 +20,19 @@ export default function LeaderboardPage() {
   const {data: session, status} = useSession();
   const router = useRouter();
 
-  // if (status === "loading") {
-  //   return <div>Loading...</div>;
-  // }
-  if (status === "unauthenticated") {
-    router.push("/login");
-  }
-  if (session?.user?.role !== "Student") {
-    router.push("/login");
-  }
-
   useEffect(() => {
-    fetchLeaderboardData();
-  }, [testId]);
+    if (status === "loading") return;
+
+    if (status === "unauthenticated" || session?.user?.role !== "Student") {
+      router.push("/login");
+    } else {
+      fetchLeaderboardData();
+    }
+  }, [status, session, router]);
+
+  // useEffect(() => {
+  //   fetchLeaderboardData();
+  // }, [testId]);
 
   const fetchLeaderboardData = async () => {
     try {
@@ -49,6 +49,14 @@ export default function LeaderboardPage() {
       alert("Failed to fetch leaderboard data. Please try again.");
     }
   };
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (status === "unauthenticated" || session?.user?.role !== "Student") {
+    return null; // or a custom unauthorized message
+  }
 
   return (
     <Card className="w-full max-w-3xl mx-auto">

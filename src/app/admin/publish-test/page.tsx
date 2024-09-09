@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,22 +14,18 @@ interface Test {
 
 export default function PublishTestsPage() {
   const [tests, setTests] = useState<Test[]>([]);
-  const {data: session, status} = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
-  // if (status === "loading") {
-  //   return <div>Loading...</div>;
-  // }
-  if (status === "unauthenticated") {
-    router.push("/login");
-  }
-  if (session?.user?.role !== "Admin") {
-    router.push("/login");
-  }
-
   useEffect(() => {
-    fetchTests();
-  }, []);
+    if (status === "loading") return;
+
+    if (status === "unauthenticated" || session?.user?.role !== "Admin") {
+      router.push("/login");
+    } else {
+      fetchTests();
+    }
+  }, [status, session, router]);
 
   const fetchTests = async () => {
     try {
@@ -56,7 +51,6 @@ export default function PublishTestsPage() {
         },
         body: JSON.stringify({ isPublished: newStatus }),
       });
-
       if (response.ok) {
         fetchTests(); // Refetch tests to update the UI
       } else {
@@ -67,6 +61,14 @@ export default function PublishTestsPage() {
       alert('Failed to update test status. Please try again.');
     }
   };
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (status === "unauthenticated" || session?.user?.role !== "Admin") {
+    return null; // or a custom unauthorized message
+  }
 
   return (
     <div className="space-y-4">

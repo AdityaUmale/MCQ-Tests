@@ -14,15 +14,20 @@ export default function Component() {
   const {data: session, status} = useSession();
   const router = useRouter();
 
-  // if (status === "loading") {
-  //   return <div>Loading...</div>;
-  // }
-  if (status === "unauthenticated") {
-    router.push("/login");
-    return null;
-  }
-  if (session?.user?.role !== "Student") {
-    router.push("/login");
+  useEffect(() => {
+    if (status === "loading") return;
+
+    if (status === "unauthenticated" || session?.user?.role !== "Student") {
+      router.push("/login");
+    } 
+  }, [status, session, router]);
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+    }
+
+  if (status === "unauthenticated" || session?.user?.role !== "Student") {
+    return null; // or a custom unauthorized message
   }
 
     return (

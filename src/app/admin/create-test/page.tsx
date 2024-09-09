@@ -1,7 +1,7 @@
 // page.tsx
 "use client";
 
-import { useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import MCQForm from '../../components/MCQForm'
 import { Card, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -18,15 +18,13 @@ export default function CreateTestPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  // if (status === "loading") {
-  //   return <div>Loading...</div>;
-  // }
-  if (status === "unauthenticated") {
-    router.push("/login");
-  }
-  if (session?.user?.role !== "Admin") {
-    router.push("/login");
-  }
+ useEffect(() => {
+    if (status === "loading") return; 
+
+    if (status === "unauthenticated" || session?.user?.role !== "Admin") {
+      router.push("/login");
+    } 
+  }, [status, session, router]);
 
 
   const handleAddQuestion = (questionData: QuestionData) => {
@@ -60,6 +58,14 @@ export default function CreateTestPage() {
     } else {
       alert('Add at least one question to finish the test.');
     }
+  }
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (status === "unauthenticated" || session?.user?.role !== "Admin") {
+    return null; // or a custom unauthorized message
   }
 
   return (

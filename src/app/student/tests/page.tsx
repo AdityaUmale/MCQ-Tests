@@ -81,20 +81,19 @@ export default function StudentTestsPage() {
   const [loading, setLoading] = useState(true);
   const {data: session, status} = useSession();
 
-  // if (status === "loading") {
-  //   return <div>Loading...</div>;
-  // }
-
-  if (status === "unauthenticated") {
-    router.push("/login");
-  }
-  if (session?.user?.role !== "Student") {
-    router.push("/login");
-  }
-
   useEffect(() => {
-    fetchPublishedTests();
-  }, []);
+    if (status === "loading") return;
+
+    if (status === "unauthenticated" || session?.user?.role !== "Student") {
+      router.push("/login");
+    } else {
+      fetchPublishedTests();
+    }
+  }, [status, session, router]);
+
+  // useEffect(() => {
+  //   fetchPublishedTests();
+  // }, []);
 
   const fetchPublishedTests = async () => {
     setLoading(true);
@@ -129,6 +128,14 @@ export default function StudentTestsPage() {
     router.push("/student/dashboard");
     console.log(`Reviewing test ${testId}`);
   };
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (status === "unauthenticated" || session?.user?.role !== "Student") {
+    return null; // or a custom unauthorized message
+  }
 
   return (
     <div className="space-y-4">

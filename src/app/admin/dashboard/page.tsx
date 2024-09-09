@@ -2,6 +2,7 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 /**
  * v0 by Vercel.
@@ -12,16 +13,22 @@ export default function Component() {
   const {data: session, status} = useSession();
   const router = useRouter();
 
-  // if (status === "loading") {
-  //   return <div>Loading...</div>;
-  // }
+ useEffect(() => {
+    if (status === "loading") return;
 
-  if (status === "unauthenticated") {
-    router.push("/login");
+    if (status === "unauthenticated" || session?.user?.role !== "Admin") {
+      router.push("/login");
+    } 
+  }, [status, session, router]);
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
   }
-  if (session?.user?.role !== "Admin") {
-    router.push("/login");
+
+  if (status === "unauthenticated" || session?.user?.role !== "Admin") {
+    return null; // or a custom unauthorized message
   }
+  
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
       <div className="flex items-center gap-4 text-4xl font-bold text-muted-foreground opacity-20">

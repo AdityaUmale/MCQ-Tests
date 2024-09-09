@@ -27,18 +27,17 @@ export default function TakeTestPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  // if (status === "loading") {
-  //   return <div>Loading...</div>;
-  // }
-  if (status === "unauthenticated") {
-    router.push("/login");
-  }
-  if (session?.user?.role !== "Student") {
-    router.push("/login");
-  }
-
-
   useEffect(() => {
+    if (status === "loading") return;
+
+    if (status === "unauthenticated" || session?.user?.role !== "Student") {
+      router.push("/login");
+    } else {
+      fetchTest();
+    }
+  },  [status, session, router]);
+
+  
     const fetchTest = async () => {
       try {
         const response = await fetch(`/api/tests/take-test/${testId}`);
@@ -54,8 +53,8 @@ export default function TakeTestPage() {
         alert('Failed to fetch test. Please try again.');
       }
     };
-    fetchTest();
-  }, [testId]);
+  
+
 
   const handleOptionSelect = (questionId: string, optionIndex: number) => {
     console.log(`Selecting option ${optionIndex} for question ${questionId}`);
@@ -105,6 +104,12 @@ export default function TakeTestPage() {
 
   if (!test) {
     return <div>Loading...</div>;
+  }
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+  if (status === "unauthenticated" || session?.user?.role !== "Student") {
+    return null; // or a custom unauthorized message
   }
 
   return (

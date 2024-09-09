@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useSession } from "next-auth/react";
+import { stat } from "fs";
 
 interface Question {
   _id: string;
@@ -25,20 +26,19 @@ export default function ReviewTestPage() {
   const {data: session, status} = useSession()
   const router = useRouter();
 
-  // if (status === "loading") {
-  //   return <div>Loading...</div>;
-  // }
+ useEffect(() => {
+    if (status === "loading") return;
 
-  if (status === "unauthenticated") {
-    router.push("/login");
-  }
-  if (session?.user?.role !== "Student") {
-    router.push("/login");
-  }
+    if (status === "unauthenticated" || session?.user?.role !== "Student") {
+      router.push("/login");
+    } else {
+      fetchReviewData();
+    }
+  }, [status, session, router]);
 
-  useEffect(() => {
-    fetchReviewData();
-  }, [testId, resultId]);
+  // useEffect(() => {
+  //   fetchReviewData();
+  // }, [testId, resultId]);
 
   const fetchReviewData = async () => {
     if (!testId || !resultId || testId === "null" || resultId === "null") {
@@ -63,6 +63,12 @@ export default function ReviewTestPage() {
 
   if (!reviewData) {
     return <div>Loading...</div>;
+  }
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  } 
+  if (status === "unauthenticated" || session?.user?.role !== "Student") {
+    return null; // or a custom unauthorized message
   }
 
   return (
