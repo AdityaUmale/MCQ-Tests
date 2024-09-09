@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import  dbConnect  from '@/lib/mongo';
 import Test from '@/model/Test';
 
+export const revalidate = 0;
+
 export async function GET() {
   try {
     await dbConnect();
