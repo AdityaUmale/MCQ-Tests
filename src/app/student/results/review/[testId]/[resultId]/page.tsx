@@ -1,7 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { useSession } from "next-auth/react";
 
 interface Question {
   _id: string;
@@ -21,6 +22,19 @@ export default function ReviewTestPage() {
   const params = useParams();
   const testId = params.testId as string;
   const resultId = params.resultId as string;
+  const {data: session, status} = useSession()
+  const router = useRouter();
+
+  // if (status === "loading") {
+  //   return <div>Loading...</div>;
+  // }
+
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
+  if (session?.user?.role !== "Student") {
+    router.push("/login");
+  }
 
   useEffect(() => {
     fetchReviewData();

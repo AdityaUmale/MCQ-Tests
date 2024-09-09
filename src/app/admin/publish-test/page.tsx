@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 interface Test {
   _id: string;
@@ -13,6 +15,18 @@ interface Test {
 
 export default function PublishTestsPage() {
   const [tests, setTests] = useState<Test[]>([]);
+  const {data: session, status} = useSession();
+  const router = useRouter();
+
+  // if (status === "loading") {
+  //   return <div>Loading...</div>;
+  // }
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
+  if (session?.user?.role !== "Admin") {
+    router.push("/login");
+  }
 
   useEffect(() => {
     fetchTests();

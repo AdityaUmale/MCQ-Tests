@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 interface Test {
   _id: string;
@@ -78,6 +79,18 @@ export default function StudentTestsPage() {
   const router = useRouter();
   const [tests, setTests] = useState<Test[]>([]);
   const [loading, setLoading] = useState(true);
+  const {data: session, status} = useSession();
+
+  // if (status === "loading") {
+  //   return <div>Loading...</div>;
+  // }
+
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
+  if (session?.user?.role !== "Student") {
+    router.push("/login");
+  }
 
   useEffect(() => {
     fetchPublishedTests();

@@ -1,9 +1,30 @@
+"use client";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+import { useEffect } from "react";
+
 /**
  * v0 by Vercel.
  * @see https://v0.dev/t/z8WDmAufh2L
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 export default function Component() {
+
+  const {data: session, status} = useSession();
+  const router = useRouter();
+
+  // if (status === "loading") {
+  //   return <div>Loading...</div>;
+  // }
+  if (status === "unauthenticated") {
+    router.push("/login");
+    return null;
+  }
+  if (session?.user?.role !== "Student") {
+    router.push("/login");
+  }
+
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
         <div className="flex items-center gap-4 text-4xl font-bold text-muted-foreground opacity-20">

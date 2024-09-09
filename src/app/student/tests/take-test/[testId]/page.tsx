@@ -27,6 +27,16 @@ export default function TakeTestPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
+  // if (status === "loading") {
+  //   return <div>Loading...</div>;
+  // }
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
+  if (session?.user?.role !== "Student") {
+    router.push("/login");
+  }
+
 
   useEffect(() => {
     const fetchTest = async () => {

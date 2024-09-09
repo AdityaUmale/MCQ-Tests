@@ -1,8 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useSession } from "next-auth/react";
 
 interface LeaderboardEntry {
   _id: string;
@@ -16,6 +17,18 @@ export default function LeaderboardPage() {
   const [testName, setTestName] = useState("");
   const params = useParams();
   const testId = params.testId as string;
+  const {data: session, status} = useSession();
+  const router = useRouter();
+
+  // if (status === "loading") {
+  //   return <div>Loading...</div>;
+  // }
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
+  if (session?.user?.role !== "Student") {
+    router.push("/login");
+  }
 
   useEffect(() => {
     fetchLeaderboardData();

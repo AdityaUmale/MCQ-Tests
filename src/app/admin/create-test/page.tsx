@@ -8,11 +8,26 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label';
 import { Input } from '@/app/components/ui/input';
 import { QuestionData } from '@/types/QuestionData';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function CreateTestPage() {
   const [questions, setQuestions] = useState<QuestionData[]>([])
   const [testName, setTestName] = useState('')
   const [isTestComplete, setIsTestComplete] = useState(false)
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  // if (status === "loading") {
+  //   return <div>Loading...</div>;
+  // }
+  if (status === "unauthenticated") {
+    router.push("/login");
+  }
+  if (session?.user?.role !== "Admin") {
+    router.push("/login");
+  }
+
 
   const handleAddQuestion = (questionData: QuestionData) => {
     setQuestions((prev) => [...prev, questionData])
