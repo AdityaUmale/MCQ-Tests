@@ -1,38 +1,57 @@
 import { NextResponse } from "next/server";
-import { createUser } from "@/queries/users";
 import { User } from "@/model/user-model";
-
 import bcrypt from "bcryptjs";
-import  dbConnect  from "@/lib/mongo";
+import mongoose from "mongoose";
+import dbConnect from "@/lib/mongo";
 
 export const POST = async (request: any) => {
-  const {name, email, password, role} = await request.json();
+  const { name, email, password, role } = await request.json();
 
-  console.log(name, email, password, role);
-
-  // Create a DB Conenction
   await dbConnect();
-  // Encrypt the password
-  const hashedPassword = await bcrypt.hash(password, 5);
-  // Form a DB payload
-  const newUser = new User({
-    name,
-    email,
-    password: hashedPassword,
-    role,
-  });
 
-  // Update the DB
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
-    await createUser(newUser);
+    // Check if the email already exists
+    const existingUser = await User.findOne({ email }).session(session);
+    if (existingUser) {
+      await session.abortTransaction();
+      session.endSession();
+      return new NextResponse("Email already registered", {
+        status: 400,
+      });
+    }
+
+    // Encrypt the password
+    const hashedPassword = await bcrypt.hash(password, 5);
+
+    // Create a new user
+    const newUser = new User({
+      name,
+      email,
+      password: hashedPassword,
+      role,
+    });
+
+    // Save the user to the database
+    await newUser.save({ session });
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return new NextResponse("User has been created", {
+      status: 201,
+    });
   } catch (err: any) {
-    return new NextResponse(err.mesage, {
+    await session.abortTransaction();
+    session.endSession();
+
+    // Log the error for debugging
+    console.error("Error registering user:", err);
+
+    return new NextResponse(err.message, {
       status: 500,
     });
   }
-
-  return new NextResponse("User has been created", {
-    status: 201,
-  });
-
- }
+};

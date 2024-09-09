@@ -73,7 +73,7 @@ const RegistrationForm = () => {
           </SelectTrigger>
           <SelectContent>
               <SelectItem value="Student">Student</SelectItem>
-              <SelectItem value="Admin">Admin</SelectItem>
+              <SelectItem disabled value="Admin">Admin</SelectItem>
           </SelectContent>
         </Select>
 
