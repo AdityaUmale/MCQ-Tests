@@ -22,7 +22,7 @@ export default function TakeTestPage() {
   const [selectedAnswers, setSelectedAnswers] = useState<{[key: string]: number}>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(0.1 * 60); // 30 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 minutes in seconds
   const [isTimeUp, setIsTimeUp] = useState(false);
   const params = useParams();
   const testId = params.testId as string;
