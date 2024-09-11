@@ -1,51 +1,52 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../../auth";
-import Test from '@/model/Test';
-import TestResult from '../../../model/TestResult';
-import  dbConnect  from '@/lib/mongo';
+import dbConnect from "@/lib/mongo";
+import Test from "@/model/Test";
+import TestResult from "@/model/TestResult";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth";
 import mongoose from 'mongoose';
 
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session || !session.user) {
+  const authSession = await getServerSession(authOptions);
+  if (!authSession || !authSession.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   
   await dbConnect();
   const { testId, answers } = await request.json();
-  console.log("answers are:", answers);
-  console.log("testId is:", testId);
+
+  const mongoSession = await mongoose.startSession();
+  mongoSession.startTransaction();
 
   try {
-    const test = await Test.findById(testId);
+    const test = await Test.findById(testId).session(mongoSession);
     if (!test) {
-      return NextResponse.json({ error: 'Test not found' }, { status: 404 });
+      throw new Error('Test not found');
     }
 
+    const existingResult = await TestResult.findOne({
+      user: authSession.user.id,
+      test: testId
+    }).session(mongoSession);
+
+    if (existingResult) {
+      throw new Error('Test already submitted');
+    }
+
+    // Calculate score and create TestResult
     let score = 0;
-    const totalQuestions = test.questions.length;
-
     test.questions.forEach((question: any) => {
-      const questionId = question._id.toString();
-      console.log("question id is:", questionId);
-      console.log("submitted answer is:", answers[questionId]);
-      console.log("correct answer is:", question.correctAnswer);
-
-      if (answers[questionId] === question.correctAnswer) {
+      if (answers[question._id.toString()] === question.correctAnswer) {
         score++;
-        console.log("Correct answer!");
-      } else {
-        console.log("Incorrect answer.");
       }
     });
 
-    const percentage = (score / totalQuestions) * 100;
+    const percentage = (score / test.questions.length) * 100;
 
     const testResult = new TestResult({
-      userName: session.user.name,
+      userName: authSession.user.name,
       testName: test.testName,
-      user: session.user.id,
+      user: authSession.user.id,
       test: testId,
       answers: Object.entries(answers).map(([questionId, selectedAnswer]) => ({
         question: new mongoose.Types.ObjectId(questionId),
@@ -55,11 +56,16 @@ export async function POST(request: Request) {
       percentage
     });
 
-    await testResult.save();
+    await testResult.save({ session: mongoSession });
+    await mongoSession.commitTransaction();
 
     return NextResponse.json({ message: 'Test submitted successfully', score, percentage }, { status: 200 });
   } catch (error) {
+    await mongoSession.abortTransaction();
     console.error('Error submitting test:', error);
-    return NextResponse.json({ error: 'Failed to submit test' }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'Failed to submit test';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
+  } finally {
+    mongoSession.endSession();
   }
 }

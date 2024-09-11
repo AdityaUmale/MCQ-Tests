@@ -1,10 +1,8 @@
 "use client"
 import { useState, useEffect } from "react"
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import { useSession } from "next-auth/react";
-import { Router } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 interface Question {
   _id: string;
@@ -22,6 +20,7 @@ interface Test {
 export default function TakeTestPage() {
   const [test, setTest] = useState<Test | null>(null);
   const [selectedAnswers, setSelectedAnswers] = useState<{[key: string]: number}>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const params = useParams();
   const testId = params.testId as string;
   const { data: session, status } = useSession();
@@ -66,6 +65,9 @@ export default function TakeTestPage() {
   };
 
   const handleSubmit = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     if (status !== "authenticated") {
       alert("You must be logged in to submit a test.");
       return;
@@ -99,6 +101,8 @@ export default function TakeTestPage() {
     } catch (error) {
       console.error('Error submitting test:', error);
       alert('Failed to submit test. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -151,7 +155,9 @@ export default function TakeTestPage() {
         ))}
       </div>
       <div className="mt-8 flex justify-end">
-        <Button onClick={handleSubmit}>Submit Test</Button>
+        <Button onClick={handleSubmit} disabled={isSubmitting}>
+          {isSubmitting ? 'Submitting...' : 'Submit Test'}
+        </Button>
       </div>
     </div>
   );
