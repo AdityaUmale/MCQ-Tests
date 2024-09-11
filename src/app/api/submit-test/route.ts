@@ -2,18 +2,21 @@ import { NextResponse } from 'next/server';
 import dbConnect from "@/lib/mongo";
 import Test from "@/model/Test";
 import TestResult from "@/model/TestResult";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/auth";
 import mongoose from 'mongoose';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/auth';
 
-export async function POST(request: Request) {
-  const authSession = await getServerSession(authOptions);
-  if (!authSession || !authSession.user) {
+export async function POST(req: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  
+  const { userName, testName, testId, answers, isAutoSubmit } = await req.json();
+
+  // Log received data
+  console.log("Received submission:", { userName, testName, testId, answers, isAutoSubmit });
+
   await dbConnect();
-  const { testId, answers } = await request.json();
 
   const mongoSession = await mongoose.startSession();
   mongoSession.startTransaction();
@@ -25,7 +28,7 @@ export async function POST(request: Request) {
     }
 
     const existingResult = await TestResult.findOne({
-      user: authSession.user.id,
+      user: session.user.id,
       test: testId
     }).session(mongoSession);
 
@@ -44,9 +47,9 @@ export async function POST(request: Request) {
     const percentage = (score / test.questions.length) * 100;
 
     const testResult = new TestResult({
-      userName: authSession.user.name,
+      userName: session.user.name,
       testName: test.testName,
-      user: authSession.user.id,
+      user: session.user.id,
       test: testId,
       answers: Object.entries(answers).map(([questionId, selectedAnswer]) => ({
         question: new mongoose.Types.ObjectId(questionId),
