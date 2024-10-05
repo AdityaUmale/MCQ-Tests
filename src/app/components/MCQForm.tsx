@@ -4,6 +4,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { QuestionData } from "@/types/QuestionData";
+import { Textarea } from "@/components/ui/textarea"
 
 interface MCQFormProps {
   onAddQuestion: (question: QuestionData) => void;
@@ -42,12 +43,13 @@ export default function MCQForm({ onAddQuestion }: MCQFormProps) {
       {/* Question Input */}
       <div className="mb-4">
         <Label htmlFor="question">Question</Label>
-        <Input
+        <Textarea
           id="question"
-          placeholder="Enter your question"
+          placeholder="Enter your question (you can use line breaks and code snippets)"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           required
+          className="min-h-[100px]"
         />
       </div>
       {/* Option Inputs */}

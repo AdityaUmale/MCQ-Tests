@@ -11,7 +11,8 @@ export async function doCredentialLogin(formData: any) {
         redirect: false,
       });
       if (response?.error) {
-        return { error: response.error };
+        // Return a more specific error message
+        return { error: "Invalid email or password" };
       }
       const session = await getSession();
       const role = session?.user?.role;
@@ -46,4 +47,3 @@ export async function doLogout() {
       console.error("Logout failed:", err);
     }
   }
-  

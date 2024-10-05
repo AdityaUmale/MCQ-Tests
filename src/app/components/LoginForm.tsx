@@ -19,6 +19,7 @@ const LoginForm = () => {
       const result = await doCredentialLogin(formData);
 
       if (result.error) {
+        alert(result.error);
         console.error(result.error);
         setError(result.error);
       } else if (result.redirectUrl && result.role) {

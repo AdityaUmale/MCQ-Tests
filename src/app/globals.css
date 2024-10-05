@@ -59,6 +59,11 @@
   }
 }
 
+.preserve-whitespace {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
 @layer base {
   * {
     @apply border-border;

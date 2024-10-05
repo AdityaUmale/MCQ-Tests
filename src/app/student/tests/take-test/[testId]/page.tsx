@@ -146,7 +146,9 @@ export default function TakeTestPage() {
         <div className="space-y-8">
           {test.questions.map((question, index) => (
             <div key={question._id} className="bg-background rounded-lg shadow-sm p-6">
-              <h2 className="text-lg font-semibold mb-4">{index + 1}. {question.question}</h2>
+              <h2 className="text-lg font-semibold mb-4 preserve-whitespace">
+  {index + 1}. {question.question}
+</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {question.options.map((option, optionIndex) => (
                   <div
